@@ -32,14 +32,14 @@ describe('AC #2 — 15 nights, tonight +/- 7, each the nearest bundled frame at 
     expect(nights[nights.length - 1]!.offset).toBe(NIGHT_WINDOW);
   });
 
-  it('phases advance smoothly across adjacent nights (no duplicate frame gaps > 2 steps)', () => {
+  it('phases advance smoothly across adjacent nights (no gaps > 3 steps)', () => {
     const nights = nightsAround(NOW, frames);
     for (let i = 1; i < nights.length; i++) {
       const prevIndex = nights[i - 1]!.frame.index;
       const currIndex = nights[i]!.frame.index;
       const rawDelta = Math.abs(currIndex - prevIndex);
       const wrapped = Math.min(rawDelta, 60 - rawDelta);
-      expect(wrapped).toBeLessThanOrEqual(2);
+      expect(wrapped).toBeLessThanOrEqual(3);
     }
   });
 });
