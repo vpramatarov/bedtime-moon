@@ -1,0 +1,2 @@
+skyfield==1.55
+tzdata

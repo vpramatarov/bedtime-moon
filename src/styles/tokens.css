@@ -1,0 +1,47 @@
+/* Design tokens — one :root block (RES-0001 R12.10).
+   Dark-first, warm, six colours in oklch; three radii; two durations. No light mode by design. */
+:root {
+  color-scheme: dark;
+
+  /* Palette */
+  --ground: oklch(18% 0.05 285);   /* deep indigo sky — never pure black */
+  --ground-2: oklch(24% 0.06 285); /* elevated indigo — cards, halo centre */
+  --moon: oklch(90% 0.07 85);      /* warm cream moon — never pure white */
+  --star: oklch(88% 0.03 80);      /* warm off-white stars, low opacity */
+  --cloud: oklch(60% 0.06 300);    /* muted lavender clouds (TKT-0002) */
+  --glow: oklch(80% 0.12 75);      /* warm amber tap glow */
+
+  /* Radii */
+  --r-1: 12px;
+  --r-2: 28px;
+  --r-3: 50%;
+
+  /* Durations */
+  --d-tap: 600ms;
+  --d-ambient: 9s;
+
+  /* Layout */
+  --moon-size: max(60vw, min(72vw, 48svh)); /* ≥ 60 % of viewport width (AC #5) */
+
+  /* Tap spring — fallback for browsers without linear() */
+  --ease-spring: cubic-bezier(0.2, 0.9, 0.3, 1.15);
+
+  /* Wind-down target: warmer and darker, derived — not a seventh palette colour (RES-0001 R12.2) */
+  --ember: color-mix(in oklch, var(--glow) 45%, var(--ground));
+
+  /* Settings entry glyph colour, derived — not a seventh palette colour (TKT-0005 AC #1) */
+  --glyph-dull: color-mix(in oklch, var(--star) 45%, var(--ground-2) 55%);
+}
+
+/* The one registered property that drives the whole palette shift (TKT-0002 AC #2). 0 = awake, 1 = dimmed. */
+@property --dim {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@supports (animation-timing-function: linear(0, 1)) {
+  :root {
+    --ease-spring: linear(0, 0.55 10%, 0.95 20%, 1.12 30%, 1.1 40%, 1.03 50%, 0.98 60%, 0.985 70%, 1.005 80%, 1.002 90%, 1);
+  }
+}

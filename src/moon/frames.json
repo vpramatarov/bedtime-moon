@@ -1,0 +1,549 @@
+{
+  "credit": "Moon images: NASA SVS / Ernie Wright",
+  "source": "https://svs.gsfc.nasa.gov/5587/",
+  "license": "Public domain (NASA SVS). No NASA insignia used.",
+  "generated": "2026-09-15T14:28:13.376Z",
+  "frameSize": 640,
+  "frames": [
+    {
+      "index": 0,
+      "file": "/frames/moon-00.webp",
+      "phase": 0.00937,
+      "utc": "2026-01-18T20:00:00Z",
+      "sourceFrame": 429,
+      "nasaIlluminationPct": 0.09,
+      "suncalcIlluminationPct": 0.1
+    },
+    {
+      "index": 1,
+      "file": "/frames/moon-01.webp",
+      "phase": 0.017,
+      "utc": "2026-01-19T07:00:00Z",
+      "sourceFrame": 440,
+      "nasaIlluminationPct": 0.29,
+      "suncalcIlluminationPct": 0.3
+    },
+    {
+      "index": 2,
+      "file": "/frames/moon-02.webp",
+      "phase": 0.03309,
+      "utc": "2026-01-19T20:00:00Z",
+      "sourceFrame": 453,
+      "nasaIlluminationPct": 1.08,
+      "suncalcIlluminationPct": 1.1
+    },
+    {
+      "index": 3,
+      "file": "/frames/moon-03.webp",
+      "phase": 0.05034,
+      "utc": "2026-01-20T09:00:00Z",
+      "sourceFrame": 466,
+      "nasaIlluminationPct": 2.48,
+      "suncalcIlluminationPct": 2.5
+    },
+    {
+      "index": 4,
+      "file": "/frames/moon-04.webp",
+      "phase": 0.06662,
+      "utc": "2026-01-20T21:00:00Z",
+      "sourceFrame": 478,
+      "nasaIlluminationPct": 4.32,
+      "suncalcIlluminationPct": 4.3
+    },
+    {
+      "index": 5,
+      "file": "/frames/moon-05.webp",
+      "phase": 0.08313,
+      "utc": "2026-01-21T09:00:00Z",
+      "sourceFrame": 490,
+      "nasaIlluminationPct": 6.67,
+      "suncalcIlluminationPct": 6.7
+    },
+    {
+      "index": 6,
+      "file": "/frames/moon-06.webp",
+      "phase": 0.09982,
+      "utc": "2026-01-21T21:00:00Z",
+      "sourceFrame": 502,
+      "nasaIlluminationPct": 9.52,
+      "suncalcIlluminationPct": 9.5
+    },
+    {
+      "index": 7,
+      "file": "/frames/moon-07.webp",
+      "phase": 0.11668,
+      "utc": "2026-01-22T09:00:00Z",
+      "sourceFrame": 514,
+      "nasaIlluminationPct": 12.85,
+      "suncalcIlluminationPct": 12.8
+    },
+    {
+      "index": 8,
+      "file": "/frames/moon-08.webp",
+      "phase": 0.13368,
+      "utc": "2026-01-22T21:00:00Z",
+      "sourceFrame": 526,
+      "nasaIlluminationPct": 16.63,
+      "suncalcIlluminationPct": 16.6
+    },
+    {
+      "index": 9,
+      "file": "/frames/moon-09.webp",
+      "phase": 0.14939,
+      "utc": "2026-01-23T08:00:00Z",
+      "sourceFrame": 537,
+      "nasaIlluminationPct": 20.46,
+      "suncalcIlluminationPct": 20.5
+    },
+    {
+      "index": 10,
+      "file": "/frames/moon-10.webp",
+      "phase": 0.16668,
+      "utc": "2026-01-23T20:00:00Z",
+      "sourceFrame": 549,
+      "nasaIlluminationPct": 25.01,
+      "suncalcIlluminationPct": 25
+    },
+    {
+      "index": 11,
+      "file": "/frames/moon-11.webp",
+      "phase": 0.18264,
+      "utc": "2026-01-24T07:00:00Z",
+      "sourceFrame": 560,
+      "nasaIlluminationPct": 29.47,
+      "suncalcIlluminationPct": 29.5
+    },
+    {
+      "index": 12,
+      "file": "/frames/moon-12.webp",
+      "phase": 0.2002,
+      "utc": "2026-01-24T19:00:00Z",
+      "sourceFrame": 572,
+      "nasaIlluminationPct": 34.61,
+      "suncalcIlluminationPct": 34.6
+    },
+    {
+      "index": 13,
+      "file": "/frames/moon-13.webp",
+      "phase": 0.21642,
+      "utc": "2026-01-25T06:00:00Z",
+      "sourceFrame": 583,
+      "nasaIlluminationPct": 39.53,
+      "suncalcIlluminationPct": 39.5
+    },
+    {
+      "index": 14,
+      "file": "/frames/moon-14.webp",
+      "phase": 0.23275,
+      "utc": "2026-01-25T17:00:00Z",
+      "sourceFrame": 594,
+      "nasaIlluminationPct": 44.59,
+      "suncalcIlluminationPct": 44.6
+    },
+    {
+      "index": 15,
+      "file": "/frames/moon-15.webp",
+      "phase": 0.25071,
+      "utc": "2026-01-26T05:00:00Z",
+      "sourceFrame": 606,
+      "nasaIlluminationPct": 50.23,
+      "suncalcIlluminationPct": 50.2
+    },
+    {
+      "index": 16,
+      "file": "/frames/moon-16.webp",
+      "phase": 0.26729,
+      "utc": "2026-01-26T16:00:00Z",
+      "sourceFrame": 617,
+      "nasaIlluminationPct": 55.42,
+      "suncalcIlluminationPct": 55.4
+    },
+    {
+      "index": 17,
+      "file": "/frames/moon-17.webp",
+      "phase": 0.28399,
+      "utc": "2026-01-27T03:00:00Z",
+      "sourceFrame": 628,
+      "nasaIlluminationPct": 60.6,
+      "suncalcIlluminationPct": 60.6
+    },
+    {
+      "index": 18,
+      "file": "/frames/moon-18.webp",
+      "phase": 0.29925,
+      "utc": "2026-01-27T13:00:00Z",
+      "sourceFrame": 638,
+      "nasaIlluminationPct": 65.23,
+      "suncalcIlluminationPct": 65.2
+    },
+    {
+      "index": 19,
+      "file": "/frames/moon-19.webp",
+      "phase": 0.31614,
+      "utc": "2026-01-28T00:00:00Z",
+      "sourceFrame": 649,
+      "nasaIlluminationPct": 70.19,
+      "suncalcIlluminationPct": 70.2
+    },
+    {
+      "index": 20,
+      "file": "/frames/moon-20.webp",
+      "phase": 0.33312,
+      "utc": "2026-01-28T11:00:00Z",
+      "sourceFrame": 660,
+      "nasaIlluminationPct": 74.94,
+      "suncalcIlluminationPct": 74.9
+    },
+    {
+      "index": 21,
+      "file": "/frames/moon-21.webp",
+      "phase": 0.35017,
+      "utc": "2026-01-28T22:00:00Z",
+      "sourceFrame": 671,
+      "nasaIlluminationPct": 79.44,
+      "suncalcIlluminationPct": 79.4
+    },
+    {
+      "index": 22,
+      "file": "/frames/moon-22.webp",
+      "phase": 0.36728,
+      "utc": "2026-01-29T09:00:00Z",
+      "sourceFrame": 682,
+      "nasaIlluminationPct": 83.6,
+      "suncalcIlluminationPct": 83.6
+    },
+    {
+      "index": 23,
+      "file": "/frames/moon-23.webp",
+      "phase": 0.38286,
+      "utc": "2026-01-29T19:00:00Z",
+      "sourceFrame": 692,
+      "nasaIlluminationPct": 87.06,
+      "suncalcIlluminationPct": 87.1
+    },
+    {
+      "index": 24,
+      "file": "/frames/moon-24.webp",
+      "phase": 0.40001,
+      "utc": "2026-01-30T06:00:00Z",
+      "sourceFrame": 703,
+      "nasaIlluminationPct": 90.46,
+      "suncalcIlluminationPct": 90.5
+    },
+    {
+      "index": 25,
+      "file": "/frames/moon-25.webp",
+      "phase": 0.41714,
+      "utc": "2026-01-30T17:00:00Z",
+      "sourceFrame": 714,
+      "nasaIlluminationPct": 93.38,
+      "suncalcIlluminationPct": 93.4
+    },
+    {
+      "index": 26,
+      "file": "/frames/moon-26.webp",
+      "phase": 0.43267,
+      "utc": "2026-01-31T03:00:00Z",
+      "sourceFrame": 724,
+      "nasaIlluminationPct": 95.59,
+      "suncalcIlluminationPct": 95.6
+    },
+    {
+      "index": 27,
+      "file": "/frames/moon-27.webp",
+      "phase": 0.44966,
+      "utc": "2026-01-31T14:00:00Z",
+      "sourceFrame": 735,
+      "nasaIlluminationPct": 97.52,
+      "suncalcIlluminationPct": 97.5
+    },
+    {
+      "index": 28,
+      "file": "/frames/moon-28.webp",
+      "phase": 0.46646,
+      "utc": "2026-02-01T01:00:00Z",
+      "sourceFrame": 746,
+      "nasaIlluminationPct": 98.89,
+      "suncalcIlluminationPct": 98.9
+    },
+    {
+      "index": 29,
+      "file": "/frames/moon-29.webp",
+      "phase": 0.48275,
+      "utc": "2026-02-01T12:00:00Z",
+      "sourceFrame": 757,
+      "nasaIlluminationPct": 99.71,
+      "suncalcIlluminationPct": 99.7
+    },
+    {
+      "index": 30,
+      "file": "/frames/moon-30.webp",
+      "phase": 0.50637,
+      "utc": "2026-02-01T23:00:00Z",
+      "sourceFrame": 768,
+      "nasaIlluminationPct": 99.96,
+      "suncalcIlluminationPct": 100
+    },
+    {
+      "index": 31,
+      "file": "/frames/moon-31.webp",
+      "phase": 0.51702,
+      "utc": "2026-02-02T09:00:00Z",
+      "sourceFrame": 778,
+      "nasaIlluminationPct": 99.71,
+      "suncalcIlluminationPct": 99.7
+    },
+    {
+      "index": 32,
+      "file": "/frames/moon-32.webp",
+      "phase": 0.53284,
+      "utc": "2026-02-02T20:00:00Z",
+      "sourceFrame": 789,
+      "nasaIlluminationPct": 98.94,
+      "suncalcIlluminationPct": 98.9
+    },
+    {
+      "index": 33,
+      "file": "/frames/moon-33.webp",
+      "phase": 0.55032,
+      "utc": "2026-02-03T08:00:00Z",
+      "sourceFrame": 801,
+      "nasaIlluminationPct": 97.52,
+      "suncalcIlluminationPct": 97.5
+    },
+    {
+      "index": 34,
+      "file": "/frames/moon-34.webp",
+      "phase": 0.56622,
+      "utc": "2026-02-03T19:00:00Z",
+      "sourceFrame": 812,
+      "nasaIlluminationPct": 95.73,
+      "suncalcIlluminationPct": 95.7
+    },
+    {
+      "index": 35,
+      "file": "/frames/moon-35.webp",
+      "phase": 0.58336,
+      "utc": "2026-02-04T07:00:00Z",
+      "sourceFrame": 824,
+      "nasaIlluminationPct": 93.3,
+      "suncalcIlluminationPct": 93.3
+    },
+    {
+      "index": 36,
+      "file": "/frames/moon-36.webp",
+      "phase": 0.60026,
+      "utc": "2026-02-04T19:00:00Z",
+      "sourceFrame": 836,
+      "nasaIlluminationPct": 90.4,
+      "suncalcIlluminationPct": 90.4
+    },
+    {
+      "index": 37,
+      "file": "/frames/moon-37.webp",
+      "phase": 0.6169,
+      "utc": "2026-02-05T07:00:00Z",
+      "sourceFrame": 848,
+      "nasaIlluminationPct": 87.11,
+      "suncalcIlluminationPct": 87.1
+    },
+    {
+      "index": 38,
+      "file": "/frames/moon-38.webp",
+      "phase": 0.63329,
+      "utc": "2026-02-05T19:00:00Z",
+      "sourceFrame": 860,
+      "nasaIlluminationPct": 83.46,
+      "suncalcIlluminationPct": 83.5
+    },
+    {
+      "index": 39,
+      "file": "/frames/moon-39.webp",
+      "phase": 0.64944,
+      "utc": "2026-02-06T07:00:00Z",
+      "sourceFrame": 872,
+      "nasaIlluminationPct": 79.53,
+      "suncalcIlluminationPct": 79.5
+    },
+    {
+      "index": 40,
+      "file": "/frames/moon-40.webp",
+      "phase": 0.66668,
+      "utc": "2026-02-06T20:00:00Z",
+      "sourceFrame": 885,
+      "nasaIlluminationPct": 74.99,
+      "suncalcIlluminationPct": 75
+    },
+    {
+      "index": 41,
+      "file": "/frames/moon-41.webp",
+      "phase": 0.68368,
+      "utc": "2026-02-07T09:00:00Z",
+      "sourceFrame": 898,
+      "nasaIlluminationPct": 70.23,
+      "suncalcIlluminationPct": 70.2
+    },
+    {
+      "index": 42,
+      "file": "/frames/moon-42.webp",
+      "phase": 0.70047,
+      "utc": "2026-02-07T22:00:00Z",
+      "sourceFrame": 911,
+      "nasaIlluminationPct": 65.31,
+      "suncalcIlluminationPct": 65.3
+    },
+    {
+      "index": 43,
+      "file": "/frames/moon-43.webp",
+      "phase": 0.71708,
+      "utc": "2026-02-08T11:00:00Z",
+      "sourceFrame": 924,
+      "nasaIlluminationPct": 60.27,
+      "suncalcIlluminationPct": 60.3
+    },
+    {
+      "index": 44,
+      "file": "/frames/moon-44.webp",
+      "phase": 0.73355,
+      "utc": "2026-02-09T00:00:00Z",
+      "sourceFrame": 937,
+      "nasaIlluminationPct": 55.16,
+      "suncalcIlluminationPct": 55.2
+    },
+    {
+      "index": 45,
+      "file": "/frames/moon-45.webp",
+      "phase": 0.74991,
+      "utc": "2026-02-09T13:00:00Z",
+      "sourceFrame": 950,
+      "nasaIlluminationPct": 50.03,
+      "suncalcIlluminationPct": 50
+    },
+    {
+      "index": 46,
+      "file": "/frames/moon-46.webp",
+      "phase": 0.7662,
+      "utc": "2026-02-10T02:00:00Z",
+      "sourceFrame": 963,
+      "nasaIlluminationPct": 44.92,
+      "suncalcIlluminationPct": 44.9
+    },
+    {
+      "index": 47,
+      "file": "/frames/moon-47.webp",
+      "phase": 0.78372,
+      "utc": "2026-02-10T16:00:00Z",
+      "sourceFrame": 977,
+      "nasaIlluminationPct": 39.48,
+      "suncalcIlluminationPct": 39.5
+    },
+    {
+      "index": 48,
+      "file": "/frames/moon-48.webp",
+      "phase": 0.8,
+      "utc": "2026-02-11T05:00:00Z",
+      "sourceFrame": 990,
+      "nasaIlluminationPct": 34.55,
+      "suncalcIlluminationPct": 34.5
+    },
+    {
+      "index": 49,
+      "file": "/frames/moon-49.webp",
+      "phase": 0.81632,
+      "utc": "2026-02-11T18:00:00Z",
+      "sourceFrame": 1003,
+      "nasaIlluminationPct": 29.76,
+      "suncalcIlluminationPct": 29.8
+    },
+    {
+      "index": 50,
+      "file": "/frames/moon-50.webp",
+      "phase": 0.83274,
+      "utc": "2026-02-12T07:00:00Z",
+      "sourceFrame": 1016,
+      "nasaIlluminationPct": 25.16,
+      "suncalcIlluminationPct": 25.2
+    },
+    {
+      "index": 51,
+      "file": "/frames/moon-51.webp",
+      "phase": 0.85054,
+      "utc": "2026-02-12T21:00:00Z",
+      "sourceFrame": 1030,
+      "nasaIlluminationPct": 20.47,
+      "suncalcIlluminationPct": 20.5
+    },
+    {
+      "index": 52,
+      "file": "/frames/moon-52.webp",
+      "phase": 0.86723,
+      "utc": "2026-02-13T10:00:00Z",
+      "sourceFrame": 1043,
+      "nasaIlluminationPct": 16.41,
+      "suncalcIlluminationPct": 16.4
+    },
+    {
+      "index": 53,
+      "file": "/frames/moon-53.webp",
+      "phase": 0.88278,
+      "utc": "2026-02-13T22:00:00Z",
+      "sourceFrame": 1055,
+      "nasaIlluminationPct": 12.96,
+      "suncalcIlluminationPct": 13
+    },
+    {
+      "index": 54,
+      "file": "/frames/moon-54.webp",
+      "phase": 0.89982,
+      "utc": "2026-02-14T11:00:00Z",
+      "sourceFrame": 1068,
+      "nasaIlluminationPct": 9.58,
+      "suncalcIlluminationPct": 9.6
+    },
+    {
+      "index": 55,
+      "file": "/frames/moon-55.webp",
+      "phase": 0.91706,
+      "utc": "2026-02-15T00:00:00Z",
+      "sourceFrame": 1081,
+      "nasaIlluminationPct": 6.64,
+      "suncalcIlluminationPct": 6.6
+    },
+    {
+      "index": 56,
+      "file": "/frames/moon-56.webp",
+      "phase": 0.93318,
+      "utc": "2026-02-15T12:00:00Z",
+      "sourceFrame": 1093,
+      "nasaIlluminationPct": 4.34,
+      "suncalcIlluminationPct": 4.3
+    },
+    {
+      "index": 57,
+      "file": "/frames/moon-57.webp",
+      "phase": 0.94948,
+      "utc": "2026-02-16T00:00:00Z",
+      "sourceFrame": 1105,
+      "nasaIlluminationPct": 2.5,
+      "suncalcIlluminationPct": 2.5
+    },
+    {
+      "index": 58,
+      "file": "/frames/moon-58.webp",
+      "phase": 0.96735,
+      "utc": "2026-02-16T13:00:00Z",
+      "sourceFrame": 1118,
+      "nasaIlluminationPct": 1.05,
+      "suncalcIlluminationPct": 1
+    },
+    {
+      "index": 59,
+      "file": "/frames/moon-59.webp",
+      "phase": 0.98399,
+      "utc": "2026-02-17T01:00:00Z",
+      "sourceFrame": 1130,
+      "nasaIlluminationPct": 0.25,
+      "suncalcIlluminationPct": 0.3
+    }
+  ]
+}

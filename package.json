@@ -1,0 +1,31 @@
+{
+  "name": "bedtime-moon",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Bedtime Moon — a text-free bedtime web app that shows tonight's moon. Moon images: NASA SVS / Ernie Wright.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/manifest/apply-base-path.mjs && node scripts/sw/generate-manifest.mjs && vite build --config vite.sw.config.ts",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "frames": "node scripts/frames/select-and-fetch.mjs",
+    "icons": "node scripts/icons/generate-icons.mjs"
+  },
+  "dependencies": {
+    "suncalc": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "jsdom": "^30.0.1",
+    "sharp": "^0.35.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  }
+}

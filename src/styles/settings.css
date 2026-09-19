@@ -1,0 +1,98 @@
+/* Settings entry glyph + settings screen (TKT-0005). Kept separate from scene.css: that file owns
+   the night scene, this one owns the only screen in the app that has text. Same motion discipline
+   applies here (RES-0001 R11) — no drop shadows or blur effects, animated or not, a plain opacity
+   fade-in only. */
+
+.settings-entry {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+  right: calc(env(safe-area-inset-right, 0px) + 8px);
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-1);
+  background: var(--glyph-dull);
+  touch-action: manipulation;
+}
+
+.settings-screen {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: var(--ground);
+  color: var(--star);
+  font-family: system-ui, sans-serif;
+  font-size: 17px;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  opacity: 1;
+  transition: opacity 200ms ease-out;
+}
+
+@starting-style {
+  .settings-screen {
+    opacity: 0;
+  }
+}
+
+/* ---------- layout helpers ---------- */
+
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--ground-2);
+}
+
+.settings-button {
+  font: inherit;
+  color: var(--star);
+  background: var(--ground-2);
+  border: none;
+  border-radius: var(--r-1);
+  padding: 10px 16px;
+  touch-action: manipulation;
+}
+
+.settings-button[aria-pressed='true'] {
+  color: var(--ground);
+  background: var(--star);
+}
+
+.settings-back {
+  font: inherit;
+  color: var(--star);
+  background: transparent;
+  border: none;
+  padding: 16px 20px;
+  touch-action: manipulation;
+}
+
+.settings-row select,
+.settings-row input[type='number'] {
+  font: inherit;
+  color: var(--star);
+  background: var(--ground);
+  border: 1px solid var(--ground-2);
+  border-radius: var(--r-1);
+  padding: 10px 12px;
+}
+
+.settings-row input::placeholder {
+  color: var(--star);
+  opacity: 0.5;
+}
+
+.settings-row input[type='checkbox'] {
+  accent-color: var(--glow);
+  width: 18px;
+  height: 18px;
+}
+
+.settings-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

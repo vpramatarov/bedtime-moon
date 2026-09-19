@@ -1,0 +1,423 @@
+/* Night scene — layout, texture and motion. Tokens live in tokens.css.
+   Motion rules (RES-0001 R11): animate only transform/opacity; ambient loops 6–12 s, tiny amplitude,
+   ease-in-out, and only when motion is allowed; springs with a small bounce for the tap only. */
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--ground);
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+}
+
+/* ---------- scene ---------- */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: radial-gradient(
+    120% 90% at 50% 38%,
+    color-mix(in oklch, var(--ground-2), var(--ember) calc(var(--dim) * 35%)),
+    color-mix(in oklch, var(--ground), var(--ember) calc(var(--dim) * 20%)) 70%
+  );
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 1;
+  transition: opacity 600ms ease-out;
+}
+
+@starting-style {
+  .scene {
+    opacity: 0;
+  }
+}
+
+/* ---------- stars ---------- */
+
+.stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  border-radius: var(--r-3);
+  background: color-mix(in oklch, var(--star), var(--ember) calc(var(--dim) * 70%));
+  opacity: 0.55;
+}
+
+/* ---------- grain: one static feTurbulence layer, baked once, never animated ---------- */
+
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0 0.8 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- night strip: 15 cards, tonight +/- 7 (TKT-0004) ---------- */
+
+.night-strip {
+  position: absolute;
+  inset: 0;
+}
+
+.night-strip-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x;
+  scrollbar-width: none;
+}
+
+.night-strip-track::-webkit-scrollbar {
+  display: none;
+}
+
+.night-card {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  scroll-snap-align: center;
+}
+
+.night-nav-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 33.34%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.night-nav-zone.left {
+  left: 0;
+}
+
+.night-nav-zone.right {
+  right: 0;
+}
+
+/* AC #8: the strip stops responding to swipes once asleep -- .scene[inert] already blocks the
+   nav-zones' pointerdown and every card's tap, this additionally stops native touch-scrolling. */
+[data-phase="asleep"] .night-strip-track {
+  overflow: hidden;
+}
+
+/* ---------- moon: the one focal point, the only thing that looks touchable ---------- */
+
+.moon {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: var(--moon-size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.moon-body {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+}
+
+.halo {
+  position: absolute;
+  inset: -30%;
+  border-radius: var(--r-3);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklch, color-mix(in oklch, var(--moon), var(--ember) calc(var(--dim) * 60%)) 26%, transparent),
+    transparent 72%
+  );
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.moon-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-3);
+  display: block;
+  mix-blend-mode: screen;               /* the frame's black square becomes the sky */
+  filter: sepia(0.35) saturate(1.15);   /* static warm tint — never animated */
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.glow {
+  position: absolute;
+  inset: -25%;
+  border-radius: var(--r-3);
+  background: radial-gradient(closest-side, color-mix(in oklch, var(--glow) 55%, transparent), transparent 74%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Wind-down shade over the photo — a registered colour property, never an animated filter */
+.moon-shade {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-3);
+  background: color-mix(in oklch, transparent, var(--ember) calc(var(--dim) * 55%));
+  pointer-events: none;
+}
+
+/* ---------- tap reaction: spring on the body, pulse on the glow ---------- */
+
+.moon.is-tapped .moon-body {
+  animation: tap-spring var(--d-tap) var(--ease-spring) both;
+}
+
+.moon.is-tapped .glow {
+  animation: glow-pulse var(--d-tap) ease-out both;
+}
+
+@keyframes tap-spring {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes glow-pulse {
+  from {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- ambient loops: only when motion is allowed ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .moon {
+    animation: drift var(--d-ambient) ease-in-out infinite;
+  }
+
+  .halo {
+    animation: breathe 7s ease-in-out infinite;
+  }
+
+  .star {
+    animation: twinkle var(--dur, 6s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+}
+
+@keyframes drift {
+  from,
+  to {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes breathe {
+  from,
+  to {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes twinkle {
+  from,
+  to {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ---------- reduced motion: no drift, no twinkle, no scale — opacity fades only ---------- */
+
+[data-motion="reduced"] .moon,
+[data-motion="reduced"] .halo,
+[data-motion="reduced"] .star {
+  animation: none;
+}
+
+[data-motion="reduced"] .moon.is-tapped .moon-body {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moon.is-tapped .moon-body {
+    animation: none;
+  }
+
+  .moon.is-tapped .glow {
+    animation: glow-pulse var(--d-tap) ease-out both;
+  }
+}
+
+/* ======================================================================
+   Session phases (TKT-0002): awake → active → winding-down → asleep
+   data-phase lives on #app; --dim inherits from there into every layer.
+   ====================================================================== */
+
+#app {
+  transition: --dim 20s ease-in-out; /* AC #2: the whole palette shifts over ≤ 20 s */
+}
+
+[data-phase="winding-down"],
+[data-phase="asleep"] {
+  --dim: 1;
+}
+
+/* ---------- yawn: a slow sigh, once, at the start of the wind-down ---------- */
+
+.moon-body.is-yawning {
+  animation: yawn 2.4s ease-in-out both;
+}
+
+@keyframes yawn {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- clouds: drift in over the moon at goodnight ---------- */
+
+.clouds {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  left: var(--cx);
+  top: var(--cy);
+  width: var(--cw);
+  aspect-ratio: 2.4 / 1;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--cloud), var(--ember) calc(var(--dim) * 40%));
+  opacity: 0.94;
+  animation: clouds-in 3s ease-out both;
+  animation-delay: var(--delay, 0s);
+}
+
+.cloud::before {
+  content: '';
+  position: absolute;
+  left: 22%;
+  top: -48%;
+  width: 52%;
+  aspect-ratio: 1;
+  border-radius: var(--r-3);
+  background: inherit;
+}
+
+@keyframes clouds-in {
+  from {
+    transform: translateX(calc(var(--from, 1) * 60vw));
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.94;
+  }
+}
+
+/* ---------- asleep: a static, boring picture ---------- */
+
+[data-phase="asleep"] .moon,
+[data-phase="asleep"] .halo,
+[data-phase="asleep"] .star {
+  animation: none;
+}
+
+[data-phase="asleep"] .moon {
+  cursor: default;
+}
+
+/* ---------- reopen during the cooldown: no motion at all ---------- */
+
+[data-instant],
+[data-instant] * {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+/* ---------- reduced motion / calm mode: fades only ---------- */
+
+@keyframes clouds-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.94;
+  }
+}
+
+[data-motion="reduced"] .moon-body.is-yawning {
+  animation: none;
+}
+
+[data-motion="reduced"] .cloud {
+  animation: clouds-fade 1.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moon-body.is-yawning {
+    animation: none;
+  }
+
+  .cloud {
+    animation: clouds-fade 1.2s ease-out both;
+  }
+}

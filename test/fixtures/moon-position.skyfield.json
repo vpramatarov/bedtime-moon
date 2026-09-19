@@ -1,0 +1,188 @@
+{
+  "generator": "scripts/oracle/moon_position_fixture.py",
+  "skyfield": "1.55",
+  "ephemeris": "de421.bsp",
+  "note": "altitude/azimuth in degrees, standard compass (0=N/90=E/180=S/270=W). direction is the nearest of 8 compass points, null when up is false. Cases within 1deg of the altitude=0 or altitude=60 boundaries, or 3deg of a 45deg compass-bucket boundary, are excluded so a small suncalc/Skyfield modeling difference can never flip an expected case.",
+  "cases": [
+    {
+      "utc": "2026-01-07T07:00:00Z",
+      "lat": 40.7,
+      "lon": -74.0,
+      "altitudeDeg": 52.1485,
+      "azimuthDeg": 142.7868,
+      "up": true,
+      "direction": "south-east"
+    },
+    {
+      "utc": "2026-01-11T14:00:00Z",
+      "lat": -33.9,
+      "lon": 18.4,
+      "altitudeDeg": -23.0695,
+      "azimuthDeg": 231.0787,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-01-15T21:00:00Z",
+      "lat": 35.7,
+      "lon": 139.7,
+      "altitudeDeg": 8.8239,
+      "azimuthDeg": 135.5501,
+      "up": true,
+      "direction": "south-east"
+    },
+    {
+      "utc": "2026-01-19T04:00:00Z",
+      "lat": -23.5,
+      "lon": -46.6,
+      "altitudeDeg": -44.3228,
+      "azimuthDeg": 172.4084,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-01-23T11:00:00Z",
+      "lat": 51.5,
+      "lon": -0.1,
+      "altitudeDeg": 11.9619,
+      "azimuthDeg": 104.9528,
+      "up": true,
+      "direction": "east"
+    },
+    {
+      "utc": "2026-01-31T01:00:00Z",
+      "lat": 65.0,
+      "lon": 25.0,
+      "altitudeDeg": 34.7504,
+      "azimuthDeg": 256.6815,
+      "up": true,
+      "direction": "west"
+    },
+    {
+      "utc": "2026-02-04T08:00:00Z",
+      "lat": 42.7,
+      "lon": 23.32,
+      "altitudeDeg": -12.6464,
+      "azimuthDeg": 288.0485,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-02-12T22:00:00Z",
+      "lat": -33.9,
+      "lon": 18.4,
+      "altitudeDeg": -18.0016,
+      "azimuthDeg": 143.6191,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-02-16T05:00:00Z",
+      "lat": 35.7,
+      "lon": 139.7,
+      "altitudeDeg": 18.9911,
+      "azimuthDeg": 225.8599,
+      "up": true,
+      "direction": "south-west"
+    },
+    {
+      "utc": "2026-02-20T12:00:00Z",
+      "lat": -23.5,
+      "lon": -46.6,
+      "altitudeDeg": 2.2864,
+      "azimuthDeg": 81.8213,
+      "up": true,
+      "direction": "east"
+    },
+    {
+      "utc": "2026-02-24T19:00:00Z",
+      "lat": 51.5,
+      "lon": -0.1,
+      "altitudeDeg": 63.4814,
+      "azimuthDeg": 205.6047,
+      "up": true,
+      "direction": "south-west"
+    },
+    {
+      "utc": "2026-02-28T02:00:00Z",
+      "lat": 0.0,
+      "lon": 0.0,
+      "altitudeDeg": 18.2819,
+      "azimuthDeg": 295.9428,
+      "up": true,
+      "direction": "north-west"
+    },
+    {
+      "utc": "2026-03-04T09:00:00Z",
+      "lat": 65.0,
+      "lon": 25.0,
+      "altitudeDeg": -20.9954,
+      "azimuthDeg": 325.2567,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-03-08T16:00:00Z",
+      "lat": 42.7,
+      "lon": 23.32,
+      "altitudeDeg": -60.8425,
+      "azimuthDeg": 53.6318,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-03-12T23:00:00Z",
+      "lat": 40.7,
+      "lon": -74.0,
+      "altitudeDeg": -69.9191,
+      "azimuthDeg": 303.9336,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-03-16T06:00:00Z",
+      "lat": -33.9,
+      "lon": 18.4,
+      "altitudeDeg": 48.3857,
+      "azimuthDeg": 74.9104,
+      "up": true,
+      "direction": "east"
+    },
+    {
+      "utc": "2026-03-20T13:00:00Z",
+      "lat": 35.7,
+      "lon": 139.7,
+      "altitudeDeg": -28.6464,
+      "azimuthDeg": 309.6909,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-03-24T20:00:00Z",
+      "lat": -23.5,
+      "lon": -46.6,
+      "altitudeDeg": 37.279,
+      "azimuthDeg": 5.0762,
+      "up": true,
+      "direction": "north"
+    },
+    {
+      "utc": "2026-04-01T10:00:00Z",
+      "lat": 0.0,
+      "lon": 0.0,
+      "altitudeDeg": -67.2706,
+      "azimuthDeg": 260.9549,
+      "up": false,
+      "direction": null
+    },
+    {
+      "utc": "2026-04-05T17:00:00Z",
+      "lat": 65.0,
+      "lon": 25.0,
+      "altitudeDeg": -34.8754,
+      "azimuthDeg": 74.0092,
+      "up": false,
+      "direction": null
+    }
+  ]
+}

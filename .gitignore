@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-basepath-test/
+src/pwa/precache-manifest.generated.json
+scripts/frames/.cache/
+scripts/oracle/.venv/
+*.bsp
+.DS_Store
+deploy.html
+*.md
+!README.md
