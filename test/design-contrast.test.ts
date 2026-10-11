@@ -68,4 +68,8 @@ describe('TKT-0005 AC #1 — --glyph-dull (a derived color-mix, not a raw oklch 
     expect(contrastRatio(glyphDull, oklchToSrgb(parseOklch(token('ground'))))).toBeGreaterThanOrEqual(3);
     expect(contrastRatio(glyphDull, oklchToSrgb(parseOklch(token('ground-2'))))).toBeGreaterThanOrEqual(3);
   });
+
+  it('TKT-0013 AC #2 — --star (hamburger bar colour) is at least 3:1 against --glyph-dull', () => {
+    expect(contrastRatio(oklchToSrgb(parseOklch(token('star'))), mixedToken('glyph-dull'))).toBeGreaterThanOrEqual(3);
+  });
 });

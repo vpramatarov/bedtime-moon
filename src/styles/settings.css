@@ -13,6 +13,7 @@
   border: none;
   border-radius: var(--r-1);
   background: var(--glyph-dull);
+  color: var(--star); /* hamburger bars (currentColor), 3.8:1 on --glyph-dull — TKT-0013 */
   touch-action: manipulation;
 }
 

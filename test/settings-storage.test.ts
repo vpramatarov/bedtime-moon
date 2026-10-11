@@ -4,10 +4,26 @@ import {
   KEYS,
   readCalmMode,
   readLocation,
+  readLocationOrDefault,
   writeCalmMode,
   writeLocation,
 } from '../src/settings/settings-storage';
 import { MemoryStorage } from './helpers/memory-storage';
+
+describe('settings-storage: Бургас default (PRD-0003 / TKT-0011)', () => {
+  it('readLocationOrDefault returns exactly the Бургас town record when nothing is saved, and the saved record otherwise; never writes', () => {
+    const storage = new MemoryStorage();
+    expect(readLocationOrDefault(storage)).toEqual({ lat: 42.5, lon: 27.47, source: 'town', townId: 'burgas' });
+    expect(storage.size).toBe(0);
+
+    writeLocation(storage, { lat: 42.7, lon: 23.32, source: 'manual', townId: null });
+    expect(readLocationOrDefault(storage)).toEqual({ lat: 42.7, lon: 23.32, source: 'manual', townId: null });
+
+    clearLocation(storage);
+    expect(readLocationOrDefault(storage)).toEqual({ lat: 42.5, lon: 27.47, source: 'town', townId: 'burgas' });
+    expect(storage.size).toBe(0);
+  });
+});
 
 describe('settings-storage: location', () => {
   it('round-trips a geolocation-sourced location', () => {

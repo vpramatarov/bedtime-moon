@@ -3,7 +3,7 @@ import { mountScene, type SceneDeps } from '../src/scene/scene';
 import { loadFrames } from '../src/moon/frames';
 import { createTapSound } from '../src/audio/tap-sound';
 import type { Greeter, SpeakOverride } from '../src/audio/greeter';
-import { HANDOFF_DIRECTION_WORDS_BG, HANDOFF_NO_LOCATION_BG, HANDOFF_VISIBLE_PREFIX_BG } from '../src/audio/greeting';
+import { HANDOFF_DIRECTION_WORDS_BG, HANDOFF_VISIBLE_PREFIX_BG } from '../src/audio/greeting';
 import { createSessionController } from '../src/session/controller';
 import { COOLDOWN_MS, budgetMs } from '../src/session/session';
 import { KEYS } from '../src/session/storage';
@@ -190,11 +190,13 @@ describe('AC #3 — goodnight at the budget', () => {
 });
 
 describe('AC #2, #3, #7 — the real-sky hand-off at goodnight (TKT-0003)', () => {
-  it('speaks the no-location line when nothing is stored (fresh MemoryStorage)', async () => {
-    const { moon, goodnight } = mount();
+  it('speaks the Бургас-default line when nothing is stored (fresh MemoryStorage)', async () => {
+    const { moon, goodnight } = mount(new MemoryStorage(), { now: () => new Date('2026-09-16T10:06:59Z') });
     tap(moon);
     await elapse(B);
-    expect(goodnight.lastOverride?.text).toBe(HANDOFF_NO_LOCATION_BG);
+    expect(goodnight.lastOverride?.text).toBe(
+      `${HANDOFF_VISIBLE_PREFIX_BG}, ${HANDOFF_DIRECTION_WORDS_BG['south-east']}.`,
+    );
   });
 
   it('reads the stored location fresh at goodnight and speaks the visible+direction line', async () => {

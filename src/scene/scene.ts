@@ -17,7 +17,7 @@ import type { WakeLockPort } from '../platform/wake-lock';
 import type { SessionController } from '../session/controller';
 import type { Phase } from '../session/session';
 import type { StorageLike } from '../session/storage';
-import { readLocation } from '../settings/settings-storage';
+import { readLocationOrDefault } from '../settings/settings-storage';
 import { buildClouds } from './clouds';
 import { el } from './dom';
 import { buildNightStrip, type NightCardHandle, type NightStripDeps } from './night-strip';
@@ -148,7 +148,7 @@ export function mountScene(root: HTMLElement, deps: SceneDeps): SceneHandle {
         .play()
         .catch(() => undefined);
     } else {
-      const text = handOffLine(deps.now(), readLocation(deps.storage));
+      const text = handOffLine(deps.now(), readLocationOrDefault(deps.storage));
       void deps.goodnightVoice.speak({ text });
     }
   };

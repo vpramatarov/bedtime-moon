@@ -4,7 +4,6 @@ import {
   GREETING_FALLBACK_URL,
   HANDOFF_DIRECTION_WORDS_BG,
   HANDOFF_HIDDEN_BG,
-  HANDOFF_NO_LOCATION_BG,
   HANDOFF_VISIBLE_PREFIX_BG,
   LULLABY_URL,
 } from '../src/audio/greeting';
@@ -31,13 +30,5 @@ describe('spoken lines and asset slots', () => {
     }
     expect(HANDOFF_HIDDEN_BG.length).toBeLessThanOrEqual(70);
     expect(HANDOFF_HIDDEN_BG).toMatch(CYRILLIC);
-  });
-
-  it('TKT-0003 AC #5 — the no-location line is Bulgarian and short, with no direction word', () => {
-    expect(HANDOFF_NO_LOCATION_BG.length).toBeLessThanOrEqual(40);
-    expect(HANDOFF_NO_LOCATION_BG).toMatch(CYRILLIC);
-    for (const word of Object.values(HANDOFF_DIRECTION_WORDS_BG)) {
-      expect(HANDOFF_NO_LOCATION_BG).not.toContain(word);
-    }
   });
 });

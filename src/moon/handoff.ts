@@ -3,7 +3,6 @@
 import {
   HANDOFF_DIRECTION_WORDS_BG,
   HANDOFF_HIDDEN_BG,
-  HANDOFF_NO_LOCATION_BG,
   HANDOFF_VISIBLE_PREFIX_BG,
 } from '../audio/greeting';
 import { directionWord, moonPosition } from './position';
@@ -16,9 +15,8 @@ export interface HandOffLocation {
   lon: number;
 }
 
-export function handOffLine(now: Date, location: HandOffLocation | null): string {
-  if (!location) return HANDOFF_NO_LOCATION_BG;
-
+/** Always called with a location: with nothing saved the app uses Бургас (PRD-0003 / TKT-0011). */
+export function handOffLine(now: Date, location: HandOffLocation): string {
   const { altitude, azimuth } = moonPosition(now, location.lat, location.lon);
   if (altitude <= 0) return HANDOFF_HIDDEN_BG;
 

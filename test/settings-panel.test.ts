@@ -4,8 +4,8 @@ import type { InstallPromptPort } from '../src/platform/install-prompt';
 import { budgetMs } from '../src/session/session';
 import { readBudgetMinutes } from '../src/session/storage';
 import { mountSettingsPanel, type PanelDeps } from '../src/settings/panel';
-import { readCalmMode, readLocation, writeLocation } from '../src/settings/settings-storage';
-import type { Town } from '../src/settings/towns';
+import { KEYS, readCalmMode, readLocation, writeLocation } from '../src/settings/settings-storage';
+import { TOWNS, type Town } from '../src/settings/towns';
 import { FakeSpeechSynthesis } from './helpers/fake-speech';
 import { MemoryStorage } from './helpers/memory-storage';
 
@@ -182,14 +182,16 @@ describe('AC #4/#5 — location', () => {
     expect(readLocation(deps.storage)).toEqual({ lat: 1, lon: 2, source: 'manual', townId: null });
   });
 
-  it('choosing a town persists that town lat/lon and id', () => {
+  it('choosing a town and pressing Запази persists that town lat/lon and id', () => {
     const deps = createDeps();
     const panel = mount(deps);
     panel.open();
-    const select = group(panel.element, 'location').querySelector('select') as HTMLSelectElement;
+    const locationEl = group(panel.element, 'location');
+    const select = locationEl.querySelector('select') as HTMLSelectElement;
 
     select.value = 'plovdiv';
     select.dispatchEvent(new Event('change'));
+    (locationEl.querySelectorAll('button')[1] as HTMLButtonElement).click();
 
     expect(readLocation(deps.storage)).toEqual({ lat: 42.14, lon: 24.75, source: 'town', townId: 'plovdiv' });
   });
@@ -230,8 +232,9 @@ describe('AC #4/#5 — location', () => {
     expect(readLocation(deps.storage)).toBeNull();
   });
 
-  it('clear removes the stored location and resets the select and inputs to empty', () => {
-    const deps = createDeps();
+  it('clear removes the stored location and resets the select and inputs to the Бургас default', () => {
+    const BURGAS = TOWNS.find((town) => town.id === 'burgas')!;
+    const deps = createDeps({ towns: [...TEST_TOWNS, BURGAS] });
     const panel = mount(deps);
     panel.open();
     const locationEl = group(panel.element, 'location');
@@ -244,14 +247,283 @@ describe('AC #4/#5 — location', () => {
 
     select.value = 'sofia';
     select.dispatchEvent(new Event('change'));
+    (locationEl.querySelectorAll('button')[1] as HTMLButtonElement).click();
     expect(readLocation(deps.storage)).not.toBeNull();
 
     clearBtn.click();
 
     expect(readLocation(deps.storage)).toBeNull();
+    for (const key of [KEYS.locationLat, KEYS.locationLon, KEYS.locationSource, KEYS.locationTownId]) {
+      expect(deps.storage.getItem(key)).toBeNull();
+    }
+    expect(select.value).toBe('burgas');
+    expect(latInput.value).toBe('42.5');
+    expect(lonInput.value).toBe('27.47');
+  });
+});
+
+describe('PRD-0003 / TKT-0012 — device location snaps to nearest town within 10 km', () => {
+  const NEAR_PLOVDIV = { lat: 42.185, lon: 24.75 }; // ≈ 5 km north of Plovdiv (42.14, 24.75)
+  const VIENNA = { lat: 48.2082, lon: 16.3738 }; // no test town within 10 km
+  const CURRENT = 'Текуща локация';
+
+  function controls(panelElement: HTMLElement) {
+    const locationEl = group(panelElement, 'location');
+    const buttons = locationEl.querySelectorAll('button');
+    const [latInput, lonInput] = Array.from(locationEl.querySelectorAll('input')) as [
+      HTMLInputElement,
+      HTMLInputElement,
+    ];
+    const select = locationEl.querySelector('select') as HTMLSelectElement;
+    return {
+      select,
+      latInput,
+      lonInput,
+      grant: buttons[0] as HTMLButtonElement,
+      save: buttons[1] as HTMLButtonElement,
+      clear: buttons[2] as HTMLButtonElement,
+      currentOptions: () => Array.from(select.options).filter((option) => option.textContent === CURRENT),
+    };
+  }
+
+  it('AC #1 — device within 10 km of a town saves that town immediately (town coords, source town) and selects it', async () => {
+    const deps = createDeps({ geolocation: fakeGeolocation('success', NEAR_PLOVDIV) });
+    const panel = mount(deps);
+    panel.open();
+    const c = controls(panel.element);
+
+    c.grant.click();
+    await flush();
+
+    expect(readLocation(deps.storage)).toEqual({ lat: 42.14, lon: 24.75, source: 'town', townId: 'plovdiv' });
+    expect(c.select.value).toBe('plovdiv');
+    expect(c.latInput.value).toBe('42.14');
+    expect(c.lonInput.value).toBe('24.75');
+    expect(c.currentOptions()).toHaveLength(0);
+  });
+
+  it('AC #2 — device with no town within 10 km saves device coords as geolocation and selects "Текуща локация"', async () => {
+    const deps = createDeps({ geolocation: fakeGeolocation('success', VIENNA) });
+    const panel = mount(deps);
+    panel.open();
+    const c = controls(panel.element);
+
+    c.grant.click();
+    await flush();
+
+    expect(readLocation(deps.storage)).toEqual({ ...VIENNA, source: 'geolocation', townId: null });
+    expect(c.currentOptions()).toHaveLength(1);
+    expect(c.select.selectedOptions[0]?.textContent).toBe(CURRENT);
+    expect(c.latInput.value).toBe('48.2082');
+    expect(c.lonInput.value).toBe('16.3738');
+  });
+
+  it('AC #3 — a saved device location still shows "Текуща локация" after close/reopen and after a fresh mount', () => {
+    const deps = createDeps();
+    writeLocation(deps.storage, { ...VIENNA, source: 'geolocation', townId: null });
+    const panel = mount(deps);
+    panel.open();
+    panel.close();
+    panel.open();
+    const reopened = controls(panel.element);
+    expect(reopened.select.selectedOptions[0]?.textContent).toBe(CURRENT);
+    expect(reopened.latInput.value).toBe('48.2082');
+    expect(reopened.lonInput.value).toBe('16.3738');
+
+    panel.destroy();
+    const reloaded = mount({ ...createDeps(), storage: deps.storage });
+    reloaded.open();
+    const fresh = controls(reloaded.element);
+    expect(fresh.currentOptions()).toHaveLength(1);
+    expect(fresh.select.selectedOptions[0]?.textContent).toBe(CURRENT);
+    expect(fresh.latInput.value).toBe('48.2082');
+  });
+
+  it('AC #4 — no "Текуща локация" entry for nothing saved, a saved town or a manual location; it disappears after Изчисти', () => {
+    const deps = createDeps();
+    const panel = mount(deps);
+    panel.open();
+    expect(controls(panel.element).currentOptions()).toHaveLength(0);
+
+    writeLocation(deps.storage, { lat: 42.7, lon: 23.32, source: 'town', townId: 'sofia' });
+    panel.open();
+    expect(controls(panel.element).currentOptions()).toHaveLength(0);
+
+    writeLocation(deps.storage, { lat: 1, lon: 2, source: 'manual', townId: null });
+    panel.open();
+    expect(controls(panel.element).currentOptions()).toHaveLength(0);
+
+    writeLocation(deps.storage, { ...VIENNA, source: 'geolocation', townId: null });
+    panel.open();
+    const c = controls(panel.element);
+    expect(c.currentOptions()).toHaveLength(1);
+    c.clear.click();
+    expect(c.currentOptions()).toHaveLength(0);
+  });
+
+  it('Запази with "Текуща локация" selected keeps source geolocation and the entry (decided 2026-10-11)', () => {
+    const deps = createDeps();
+    writeLocation(deps.storage, { ...VIENNA, source: 'geolocation', townId: null });
+    const panel = mount(deps);
+    panel.open();
+    const c = controls(panel.element);
+
+    c.save.click();
+
+    expect(readLocation(deps.storage)).toEqual({ ...VIENNA, source: 'geolocation', townId: null });
+    expect(c.currentOptions()).toHaveLength(1);
+    expect(c.select.selectedOptions[0]?.textContent).toBe(CURRENT);
+  });
+});
+
+describe('PRD-0003 / TKT-0011 — Бургас default', () => {
+  it('AC #1 — with nothing saved the panel shows Бургас and 42.5 / 27.47', () => {
+    const deps = createDeps({ towns: TOWNS });
+    const panel = mount(deps);
+    panel.open();
+    const locationEl = group(panel.element, 'location');
+    const select = locationEl.querySelector('select') as HTMLSelectElement;
+    const [latInput, lonInput] = Array.from(locationEl.querySelectorAll('input')) as [
+      HTMLInputElement,
+      HTMLInputElement,
+    ];
+
+    expect(select.value).toBe('burgas');
+    expect(select.selectedOptions[0]?.textContent).toBe('Бургас');
+    expect(latInput.value).toBe('42.5');
+    expect(lonInput.value).toBe('27.47');
+    expect((deps.storage as MemoryStorage).size).toBe(0);
+  });
+});
+
+describe('PRD-0003 / TKT-0010 — town pick saved with Запази', () => {
+  function locationControls(panelElement: HTMLElement) {
+    const locationEl = group(panelElement, 'location');
+    const [latInput, lonInput] = Array.from(locationEl.querySelectorAll('input')) as [
+      HTMLInputElement,
+      HTMLInputElement,
+    ];
+    return {
+      select: locationEl.querySelector('select') as HTMLSelectElement,
+      latInput,
+      lonInput,
+      save: locationEl.querySelectorAll('button')[1] as HTMLButtonElement,
+    };
+  }
+
+  function pick(select: HTMLSelectElement, townId: string): void {
+    select.value = townId;
+    select.dispatchEvent(new Event('change'));
+  }
+
+  function type(input: HTMLInputElement, value: string): void {
+    input.value = value;
+    input.dispatchEvent(new Event('input'));
+  }
+
+  it('AC #1 — picking a town fills lat/lon with its coords and writes nothing to storage', () => {
+    const deps = createDeps();
+    const panel = mount(deps);
+    panel.open();
+    const { select, latInput, lonInput } = locationControls(panel.element);
+
+    pick(select, 'plovdiv');
+
+    expect(latInput.value).toBe('42.14');
+    expect(lonInput.value).toBe('24.75');
+    expect((deps.storage as MemoryStorage).size).toBe(0);
+  });
+
+  it('AC #2 — Запази with a town selected saves source town, its id and its coords', () => {
+    const deps = createDeps();
+    const panel = mount(deps);
+    panel.open();
+    const { select, save } = locationControls(panel.element);
+
+    pick(select, 'plovdiv');
+    save.click();
+
+    expect(readLocation(deps.storage)).toEqual({ lat: 42.14, lon: 24.75, source: 'town', townId: 'plovdiv' });
+    expect(select.value).toBe('plovdiv');
+  });
+
+  it('AC #3 — a saved town stays selected after close + reopen and after a fresh mount (reload)', () => {
+    const deps = createDeps();
+    const panel = mount(deps);
+    panel.open();
+    const { select, save } = locationControls(panel.element);
+    pick(select, 'sofia');
+    save.click();
+
+    panel.close();
+    panel.open();
+    const reopened = locationControls(panel.element);
+    expect(reopened.select.value).toBe('sofia');
+    expect(reopened.latInput.value).toBe('42.7');
+    expect(reopened.lonInput.value).toBe('23.32');
+
+    panel.destroy();
+    const reloaded = mount({ ...createDeps(), storage: deps.storage });
+    reloaded.open();
+    const fresh = locationControls(reloaded.element);
+    expect(fresh.select.value).toBe('sofia');
+    expect(fresh.latInput.value).toBe('42.7');
+    expect(fresh.lonInput.value).toBe('23.32');
+  });
+
+  it('AC #4 — editing lat or lon after a town pick blanks the select; Запази then saves manual', () => {
+    for (const field of ['lat', 'lon'] as const) {
+      const deps = createDeps();
+      const panel = mount(deps);
+      panel.open();
+      const { select, latInput, lonInput, save } = locationControls(panel.element);
+
+      pick(select, 'plovdiv');
+      if (field === 'lat') type(latInput, '42.5');
+      else type(lonInput, '24.9');
+
+      expect(select.value).toBe('');
+      save.click();
+      expect(readLocation(deps.storage)).toEqual(
+        field === 'lat'
+          ? { lat: 42.5, lon: 24.75, source: 'manual', townId: null }
+          : { lat: 42.14, lon: 24.9, source: 'manual', townId: null },
+      );
+      expect(select.value).toBe('');
+      panel.destroy();
+    }
+  });
+
+  it('AC #5 — typed coords equal to a town’s coords save as manual with a blank select', () => {
+    const deps = createDeps();
+    const panel = mount(deps);
+    panel.open();
+    const { select, latInput, lonInput, save } = locationControls(panel.element);
+
+    type(latInput, '42.14');
+    type(lonInput, '24.75');
+    save.click();
+
+    expect(readLocation(deps.storage)).toEqual({ lat: 42.14, lon: 24.75, source: 'manual', townId: null });
     expect(select.value).toBe('');
-    expect(latInput.value).toBe('');
-    expect(lonInput.value).toBe('');
+  });
+
+  it('AC #6 — picking a town then Back without Запази leaves storage unchanged; reopen shows the saved location', () => {
+    const deps = createDeps();
+    writeLocation(deps.storage, { lat: 42.7, lon: 23.32, source: 'town', townId: 'sofia' });
+    const panel = mount(deps);
+    panel.open();
+    const { select } = locationControls(panel.element);
+
+    pick(select, 'plovdiv');
+    (panel.element.querySelector('.settings-back') as HTMLButtonElement).click();
+
+    expect(readLocation(deps.storage)).toEqual({ lat: 42.7, lon: 23.32, source: 'town', townId: 'sofia' });
+    panel.open();
+    const reopened = locationControls(panel.element);
+    expect(reopened.select.value).toBe('sofia');
+    expect(reopened.latInput.value).toBe('42.7');
+    expect(reopened.lonInput.value).toBe('23.32');
   });
 });
 

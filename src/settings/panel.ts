@@ -12,8 +12,8 @@ import type { GeolocationPort } from '../platform/geolocation';
 import type { InstallPromptPort } from '../platform/install-prompt';
 import { budgetMs, type BudgetMinutes } from '../session/session';
 import { readBudgetMinutes, writeBudgetMinutes, type StorageLike } from '../session/storage';
-import { clearLocation, readCalmMode, readLocation, writeCalmMode, writeLocation } from './settings-storage';
-import type { Town } from './towns';
+import { clearLocation, readCalmMode, readLocationOrDefault, writeCalmMode, writeLocation } from './settings-storage';
+import { nearestTownWithin, type Town } from './towns';
 
 export interface PanelDeps {
   storage: StorageLike;
@@ -41,6 +41,9 @@ const STATIC_INSTALL_HINT = 'За да инсталираш: Сподели -> �
 const VOICE_AVAILABLE = 'Гласът е наличен.';
 const VOICE_FALLBACK = 'Използва се записан глас.';
 const CREDIT_LINE = 'Moon images: NASA SVS / Ernie Wright';
+/** Device location snaps to the nearest bundled town at most this far away (PRD-0003 / TKT-0012). */
+const SNAP_KM = 10;
+const CURRENT_LOCATION_VALUE = 'current';
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string): HTMLElementTagNameMap[K] {
   const node = document.createElement(tag);
@@ -124,17 +127,35 @@ export function mountSettingsPanel(root: HTMLElement, deps: PanelDeps): Settings
   clearButton.type = 'button';
   clearButton.textContent = 'Изчисти';
 
+  // "Текуща локация": offered only while the shown location is an un-snapped device location (TKT-0012).
+  const currentOption = el('option');
+  currentOption.value = CURRENT_LOCATION_VALUE;
+  currentOption.textContent = 'Текуща локация';
+
   function refreshLocation(): void {
-    const location = readLocation(deps.storage);
-    townSelect.value = location?.source === 'town' && location.townId ? location.townId : '';
-    latInput.value = location ? String(location.lat) : '';
-    lonInput.value = location ? String(location.lon) : '';
+    const location = readLocationOrDefault(deps.storage);
+    if (location.source === 'geolocation') {
+      blankOption.after(currentOption);
+      townSelect.value = CURRENT_LOCATION_VALUE;
+    } else {
+      currentOption.remove();
+      townSelect.value = location.source === 'town' && location.townId ? location.townId : '';
+    }
+    latInput.value = String(location.lat);
+    lonInput.value = String(location.lon);
   }
 
   grantButton.addEventListener('click', () => {
     deps.geolocation.request().then(
       ({ lat, lon }) => {
-        writeLocation(deps.storage, { lat, lon, source: 'geolocation', townId: null });
+        // Saves at once, no Запази: snapped to a town within SNAP_KM (town coords), else device coords.
+        const town = nearestTownWithin(deps.towns, lat, lon, SNAP_KM);
+        writeLocation(
+          deps.storage,
+          town
+            ? { lat: town.lat, lon: town.lon, source: 'town', townId: town.id }
+            : { lat, lon, source: 'geolocation', townId: null },
+        );
         refreshLocation();
       },
       () => {
@@ -143,14 +164,37 @@ export function mountSettingsPanel(root: HTMLElement, deps: PanelDeps): Settings
     );
   });
 
+  const selectedTown = (): Town | undefined => deps.towns.find((candidate) => candidate.id === townSelect.value);
+
+  // Picking a town only fills the fields; Запази is what saves it (PRD-0003 / TKT-0010).
   townSelect.addEventListener('change', () => {
-    const town = deps.towns.find((candidate) => candidate.id === townSelect.value);
+    const town = selectedTown();
     if (!town) return;
-    writeLocation(deps.storage, { lat: town.lat, lon: town.lon, source: 'town', townId: town.id });
-    refreshLocation();
+    latInput.value = String(town.lat);
+    lonInput.value = String(town.lon);
   });
 
+  // Typing wins over the dropdown: `input` fires only on user edits, never on the programmatic
+  // fills above or in refreshLocation(), so a town pick never blanks itself.
+  const clearTownPick = (): void => {
+    townSelect.value = '';
+  };
+  latInput.addEventListener('input', clearTownPick);
+  lonInput.addEventListener('input', clearTownPick);
+
   saveButton.addEventListener('click', () => {
+    // Still on "Текуща локация" means the fields weren't edited (editing blanks the select), so the
+    // saved device location stands — keep it rather than re-saving it as manual.
+    if (townSelect.value === CURRENT_LOCATION_VALUE) {
+      refreshLocation();
+      return;
+    }
+    const town = selectedTown();
+    if (town) {
+      writeLocation(deps.storage, { lat: town.lat, lon: town.lon, source: 'town', townId: town.id });
+      refreshLocation();
+      return;
+    }
     // valueAsNumber (not Number(value)) so a blank or invalid number input reads as NaN, not 0 —
     // jsdom and real browsers both sanitize a non-numeric typed value to '' for type="number".
     const lat = latInput.valueAsNumber;

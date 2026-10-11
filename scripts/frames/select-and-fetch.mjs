@@ -35,6 +35,13 @@ const hourDate = (frame) => new Date(jan1 + (frame - 1) * HOUR_MS); // frame 1 =
 const phaseAt = (frame) => getMoonIllumination(hourDate(frame)).phase;
 const utcStamp = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
+// Shortest distance between two phases on the 0..1 circle (mirrors src/moon/phase.ts) --
+// plain Math.abs() breaks near the new-moon wrap (target 0 vs an hour at phase 0.999).
+const circularPhaseDistance = (a, b) => {
+  const d = Math.abs(a - b) % 1;
+  return Math.min(d, 1 - d);
+};
+
 async function exists(path) {
   try {
     await access(path);
@@ -73,7 +80,7 @@ for (let k = 0; k < COUNT; k++) {
   const target = k / COUNT;
   let best = { frame: lunationStart, dist: Infinity };
   for (let frame = lunationStart; frame < lunationEnd; frame++) {
-    const dist = Math.abs(phaseAt(frame) - target);
+    const dist = circularPhaseDistance(phaseAt(frame), target);
     if (dist < best.dist) best = { frame, dist };
   }
   picks.push({ index: k, sourceFrame: best.frame });

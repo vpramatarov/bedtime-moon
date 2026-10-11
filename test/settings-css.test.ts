@@ -28,6 +28,10 @@ describe('settings.css (TKT-0005 AC #1, #3)', () => {
     expect(body).toMatch(/background:\s*var\(--glyph-dull\)/);
   });
 
+  it('TKT-0013 AC #2 — .settings-entry bars use color: var(--star)', () => {
+    expect(rule('.settings-entry')).toMatch(/(?:^|[;\s])color:\s*var\(--star\)/);
+  });
+
   it('.settings-screen uses system-ui at exactly 17px', () => {
     const body = rule('.settings-screen');
     expect(body).toMatch(/font-family:\s*system-ui/);

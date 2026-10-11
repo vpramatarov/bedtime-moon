@@ -33,6 +33,10 @@ describe('AC #2 — 15 nights, tonight +/- 7, each the nearest bundled frame at 
   });
 
   it('phases advance smoothly across adjacent nights (no gaps > 3 steps)', () => {
+    // Ceiling is 3, not 2: 60 frames / ~29.53-day synodic month is an average of ~2.03
+    // frame-steps/night, already above 2, so a calendar-day sample of the true nearest frame
+    // will occasionally round to a 3-step gap (see TEST CHANGE REQUEST, 2026-09-19). 4+ would
+    // mean a frame was skipped outright and is still a bug.
     const nights = nightsAround(NOW, frames);
     for (let i = 1; i < nights.length; i++) {
       const prevIndex = nights[i - 1]!.frame.index;

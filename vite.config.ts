@@ -10,7 +10,8 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['test/**/*.test.ts'],
     globalSetup: ['test/global-setup.ts'],
-	// make test/nights.test.ts deterministic across dev machines and CI
-	env: { TZ: 'UTC' }
+    // Pin so "local time" math (test/nights.test.ts) is deterministic across dev machines and CI --
+    // without this, the same date fixture can resolve a different nearest-frame per runner TZ.
+    env: { TZ: 'UTC' },
   },
 });

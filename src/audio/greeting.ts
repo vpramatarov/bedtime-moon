@@ -23,7 +23,6 @@ export const LULLABY_URL: string | null = null;
  */
 export const HANDOFF_VISIBLE_PREFIX_BG = 'Луната е навън - да отидем да я видим';
 export const HANDOFF_HIDDEN_BG = 'Луната се крие тази вечер - да помахаме за лека нощ на небето.';
-export const HANDOFF_NO_LOCATION_BG = 'Хайде да потърсим луната навън.';
 
 export const HANDOFF_DIRECTION_WORDS_BG: Record<CompassDirection | 'high', string> = {
   north: 'на север',

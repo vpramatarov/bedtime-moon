@@ -10,6 +10,7 @@
  */
 
 import type { StorageLike } from '../session/storage';
+import { TOWNS } from './towns';
 
 export const KEYS = Object.freeze({
   locationLat: 'bedtime-moon.location.lat',
@@ -54,6 +55,21 @@ export function readLocation(storage: StorageLike): LocationRecord | null {
   const source = readSource(storage);
   if (lat === null || lon === null || source === null) return null;
   return { lat, lon, source, townId: readTownId(storage) };
+}
+
+const BURGAS = TOWNS.find((town) => town.id === 'burgas')!;
+
+/** Бургас when nothing (valid) is saved — first launch and after Изчисти (PRD-0003 / TKT-0011). Never written. */
+export const DEFAULT_LOCATION: Readonly<LocationRecord> = Object.freeze({
+  lat: BURGAS.lat,
+  lon: BURGAS.lon,
+  source: 'town',
+  townId: BURGAS.id,
+});
+
+/** The location the app actually uses: the saved one, else DEFAULT_LOCATION. */
+export function readLocationOrDefault(storage: StorageLike): LocationRecord {
+  return readLocation(storage) ?? { ...DEFAULT_LOCATION };
 }
 
 export function writeLocation(storage: StorageLike, location: LocationRecord): void {

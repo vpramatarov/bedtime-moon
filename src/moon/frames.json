@@ -2,17 +2,17 @@
   "credit": "Moon images: NASA SVS / Ernie Wright",
   "source": "https://svs.gsfc.nasa.gov/5587/",
   "license": "Public domain (NASA SVS). No NASA insignia used.",
-  "generated": "2026-09-15T14:28:13.376Z",
+  "generated": "2026-09-19T12:39:52.170Z",
   "frameSize": 640,
   "frames": [
     {
       "index": 0,
       "file": "/frames/moon-00.webp",
-      "phase": 0.00937,
-      "utc": "2026-01-18T20:00:00Z",
-      "sourceFrame": 429,
-      "nasaIlluminationPct": 0.09,
-      "suncalcIlluminationPct": 0.1
+      "phase": 0.99691,
+      "utc": "2026-02-17T11:00:00Z",
+      "sourceFrame": 1140,
+      "nasaIlluminationPct": 0.01,
+      "suncalcIlluminationPct": 0
     },
     {
       "index": 1,

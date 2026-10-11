@@ -56,3 +56,28 @@ export const TOWNS: readonly Town[] = [
   { id: 'nova-zagora', name: 'Нова Загора', lat: 42.49, lon: 26.02 },
   { id: 'svishtov', name: 'Свищов', lat: 43.62, lon: 25.35 },
 ];
+
+const EARTH_RADIUS_KM = 6371;
+const toRad = (deg: number): number => (deg * Math.PI) / 180;
+
+/** Great-circle (haversine) distance in km. */
+function distanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
+}
+
+/** The closest town to (lat, lon) if it is at most `maxKm` away, else null (PRD-0003 / TKT-0012). Offline. */
+export function nearestTownWithin(towns: readonly Town[], lat: number, lon: number, maxKm: number): Town | null {
+  let best: Town | null = null;
+  let bestKm = maxKm;
+  for (const town of towns) {
+    const km = distanceKm(lat, lon, town.lat, town.lon);
+    if (km <= bestKm) {
+      best = town;
+      bestKm = km;
+    }
+  }
+  return best;
+}
